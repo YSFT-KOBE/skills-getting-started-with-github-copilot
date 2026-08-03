@@ -41,6 +41,46 @@ activities = {
     }
 }
 
+# 追加のアクティビティ
+activities.update({
+    "Soccer Team": {
+        "description": "Outdoor soccer training and matches",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 6:00 PM",
+        "max_participants": 22,
+        "participants": ["alex@mergington.edu"]
+    },
+    "Basketball Club": {
+        "description": "Indoor basketball practice and friendly games",
+        "schedule": "Wednesdays and Fridays, 4:30 PM - 6:00 PM",
+        "max_participants": 15,
+        "participants": ["chris@mergington.edu"]
+    },
+    "Art Club": {
+        "description": "Drawing, painting, and mixed media workshops",
+        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+        "max_participants": 18,
+        "participants": ["isabella@mergington.edu"]
+    },
+    "Drama Club": {
+        "description": "Acting, stagecraft, and school productions",
+        "schedule": "Thursdays, 3:30 PM - 5:30 PM",
+        "max_participants": 25,
+        "participants": ["liam@mergington.edu"]
+    },
+    "Debate Team": {
+        "description": "Competitive debating and public speaking",
+        "schedule": "Fridays, 3:30 PM - 5:00 PM",
+        "max_participants": 12,
+        "participants": ["oliver@mergington.edu"]
+    },
+    "Science Olympiad": {
+        "description": "Prepare for science competitions and experiments",
+        "schedule": "Wednesdays, 3:30 PM - 5:30 PM",
+        "max_participants": 20,
+        "participants": ["ava@mergington.edu"]
+    }
+})
+
 
 @app.get("/")
 def root():
@@ -61,6 +101,10 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
+
+    # 登録済みの学生は、サインアップしない。
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
 
     # Add student
     activity["participants"].append(email)
